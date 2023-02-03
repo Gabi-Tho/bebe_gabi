@@ -36,6 +36,13 @@ Route::get('query', [BlogPostController::class, 'query']);
 Route::get('page', [BlogPostController::class, 'page']);
 
 
+Route::get('login',[CustomAuthController::class, 'index'])->name('login');
+Route::post('login',[CustomAuthController::class, 'authentication'])->name('user.auth');
+Route::get('logout',[CustomAuthController::class, 'logout'])->name('logout');
+
 Route::get('registration',[CustomAuthController::class, 'create'])->name('user.create');
 Route::post('registration',[CustomAuthController::class, 'store'])->name('user.store');
-Route::get('login',[CustomAuthController::class, 'index'])->name('user.index');
+
+Route::get('dashboard',[CustomAuthController::class, 'dashboard'])->name('dashboard');
+
+

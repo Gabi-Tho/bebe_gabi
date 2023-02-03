@@ -16,7 +16,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                         @endif
-                        <form action="{{route('user.store')}}" method="post">
+                        <form action="{{route('user.auth')}}" method="post">
                             @csrf
                             <div class="form-group mb-3">
                                 <input type="email" placeholder="Email" class="form-control" name="email" value="{{ old('email')}}">

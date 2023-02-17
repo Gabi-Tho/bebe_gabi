@@ -7,17 +7,18 @@
         <div class="col-12 text-center pt-5">
 
             <h1 class="display-one mt-5">
-                {{ config('app.name') }} blog
+                 @lang('lang.my_blog')
+
             </h1>
             <hr>
             <div class="row">
 
                 <div class="col-12">
-                    <p>bonne lecture de nos articles</p>
+                    <p>@lang('lang.reading_title')</p>
                 </div>
                 <div class="col-12">
                     <a href="{{ route('blog.create') }}" class="btn btn-outline-primary">
-                        ajouter un article
+                    @lang('lang.add_post')
                     </a>
                 </div>
 

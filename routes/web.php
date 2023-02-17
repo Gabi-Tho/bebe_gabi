@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BlogPostController;
 use App\Http\Controllers\CustomAuthController;
+use App\Http\Controllers\LocalizationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,14 +22,14 @@ Route::get('/', function () {
 
 
 
-Route::get('blog', [BlogPostController::class,'index'])->name('blog.index'); //renaming the route so you can customize links
-Route::get('blog/{blogPost}',[BlogPostController::class,'show'])->name('blog.show');
+Route::get('blog', [BlogPostController::class,'index'])->name('blog.index')->middleware('auth'); //renaming the route so you can customize links
+Route::get('blog/{blogPost}',[BlogPostController::class,'show'])->name('blog.show')->middleware('auth');
            //address in URL                         //method                  //creates the chemin absolute
-Route::get('blog-create',[BlogPostController::class,'create'])->name('blog.create');
-Route::post('blog-create',[BlogPostController::class,'store'])->name('blog.store');
-Route::get('blog-edit/{blogPost}',[BlogPostController::class,'edit'])->name('blog.edit');
-Route::put('blog-edit/{blogPost}',[BlogPostController::class,'update']);
-Route::delete('blog-edit/{blogPost}',[BlogPostController::class,'destroy']);
+Route::get('blog-create',[BlogPostController::class,'create'])->name('blog.create')->middleware('auth');
+Route::post('blog-create',[BlogPostController::class,'store'])->name('blog.store')->middleware('auth');
+Route::get('blog-edit/{blogPost}',[BlogPostController::class,'edit'])->name('blog.edit')->middleware('auth');
+Route::put('blog-edit/{blogPost}',[BlogPostController::class,'update'])->middleware('auth');
+Route::delete('blog-edit/{blogPost}',[BlogPostController::class,'destroy'])->middleware('auth');
 
 //test eloquent
 Route::get('query', [BlogPostController::class, 'query']);
@@ -45,4 +46,9 @@ Route::post('registration',[CustomAuthController::class, 'store'])->name('user.s
 
 Route::get('dashboard',[CustomAuthController::class, 'dashboard'])->name('dashboard');
 
+Route::get('forgot-password',[CustomAuthController::class, 'forgotPassword'])->name('forgot.pass');
+Route::post('forgot-password',[CustomAuthController::class, 'tempPassword'])->name('temp.pass');
+Route::get('new-password/{user}/{tempPassword}',[CustomAuthController::class, 'newPassword'])->name('new.pass');
+
+Route::get('lang/{locale}',[LocalizationController::class, 'index'])->name('lang');
 

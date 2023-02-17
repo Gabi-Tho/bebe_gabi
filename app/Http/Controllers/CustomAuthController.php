@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class CustomAuthController extends Controller
 {
@@ -51,7 +53,20 @@ class CustomAuthController extends Controller
         $user->password = Hash::make($request->password);
         $user->save();
 
-        return redirect()->back()->withSuccess('success');
+        $to_name = $request->name;
+        $to_email = $request->email;
+        $body = "<a href=''> cliquez ici pour confirmer </a>";
+
+        Mail::send('email.mail', $data = [
+            'name' => $to_name,
+            'body' => $body
+        ],
+        function($message) use($to_name, $to_email){
+            $message->to($to_email, $to_name)->subject('courriel test laravel');
+        }
+        );
+
+        return redirect()->back()->withSuccess(trans('lang.msg_1'));
 
 
     }
@@ -78,9 +93,11 @@ class CustomAuthController extends Controller
         $name = 'guest';
 
         if(Auth::check()){
-            $name = Auth::user()->name;
+            return view('dashboard');
         }
-        return view('dashboard',['name'=>$name]);
+
+        return redirect(route('login'))->withErrors(trans('auth.failed'));
+
     }
 
     public function logout(){
@@ -88,6 +105,53 @@ class CustomAuthController extends Controller
         Auth::logout();
         return redirect('login');
     }
+
+
+    public function forgotPassword(){
+        return view('auth.forgot-password');
+    }
+
+    public function tempPassword(Request $request){
+
+        $request->validate(
+            [ 'email' => 'required|email|exists:users']
+        );
+
+        $user = User::where('email',$request->email)->get();
+        $user = $user[0];
+        $tempPass=str::random(25);
+        $user->temp_password = $tempPass;
+        $user->save();
+        $userId= $user->id;
+
+        $link = "<a href='/new-password/".$userId."/".$tempPass."'> clickity for new password </a>";
+
+        return $link;
+
+    }
+
+    public function newPassword(User $user, $tempPassword){
+        
+        if($user->temp_password === $tempPassword){
+            return view('auth.new-password');
+        }
+
+        return redirect('forgot-password')->withErrors('password does not match you are a dungy bum');
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
     /**
      * Display the specified resource.
      *

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\BlogPost;
+use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -29,7 +31,14 @@ class BlogPostController extends Controller
      */
     public function create()
     {
+
+        // $category = new Category;
+        // $category = $category->selectCategory();
+
+        // $category = Category::selectCategory();
+        // return $category;
         return view('blog.create');
+        //return view('blog.create', ['categories' => $category]);
     }
 
     /**
@@ -44,7 +53,8 @@ class BlogPostController extends Controller
 
             'title' => $request->title,
             'body'  => $request->body,
-            'user_id' => 1
+            'user_id' => Auth::user()->id,
+            'category_id' => $request->category_id
 
         ]);
 
@@ -80,7 +90,11 @@ class BlogPostController extends Controller
      */
     public function edit(BlogPost $blogPost)
     {
-        return view('blog.edit', ['blogPost'=>$blogPost]);
+        $category = Category::selectCategory();
+
+        return view('blog.edit', ['blogPost'=>$blogPost, 
+                                 'categories'=>$category]);
+
     }
 
     /**

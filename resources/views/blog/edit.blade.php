@@ -31,6 +31,14 @@
                         <textarea name="body" id="body" class="form-control">{{$blogPost->body}}</textarea>
                     </div>
 
+                    <!-- <div class="control-group col-12">
+                        <label for="category">category</label>
+                        <select name="category_id" id="cateogory" class="form-control"></select>
+                        @foreach($categories as $category)
+                        <option value="{{ category->id }}" {{$category->id $blogPost->category_id 'selected': ''}}>{{ $category->category }}</option>
+                        @endforeach
+                    </div> -->
+
                 </div>
 
                 <div class= "card-footer">

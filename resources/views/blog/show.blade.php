@@ -10,6 +10,7 @@
             <hr>
             <P> {!! $blogPost->body !!} </P>
             <strong> Author {{ $blogPost->blogHasUser->name }}</strong>
+
             <hr>
         </div>
     </div>
@@ -29,6 +30,8 @@
     </div>
 
 </div>
+
+
 
 
 
@@ -63,3 +66,4 @@
 </div>
 
 @endsection
+

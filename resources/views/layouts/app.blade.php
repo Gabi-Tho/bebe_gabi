@@ -6,9 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> {{ config('app.name')}} @yield('title') </title>
     <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.0.0/mdb.min.css" rel="stylesheet">
 </head>
 
 <header>
+@php $locale = session()->get('locale'); @endphp
 <nav class="navbar navbar-expand-lg bg-light">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">Hola @if(Auth::check()) {{Auth::user()->name}} @else Guest @endif</a>
@@ -26,6 +28,8 @@
             <a class="nav-link" href="{{ route('blog.index') }}">Blogs</a>
             <a class="nav-link" href="{{ route('logout') }}">Logout</a>
     @endguest
+            <a class="nav-link @if($locale == 'en') bg-primary @endif " href="{{ route('lang', 'en') }}">EN</a>
+            <a class="nav-link" href="{{ route('lang', 'fr') }}">FR</a>
 
       </div>
     </div>
